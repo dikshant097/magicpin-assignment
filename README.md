@@ -1,1 +1,2 @@
-# magicpin-assignment
+This assignment is meant for the hiring process of the MAGICPIN. As per the requirement the mobile app supports the feature of pre-buffering and plays the videos near to the instant play while scrolling.
+The videos are listed in the recyclerview and touching the videos makes them being played in full screen without any lag/gitter. The videos are played from that very point from where the user have left them while scrolling or when minimized.

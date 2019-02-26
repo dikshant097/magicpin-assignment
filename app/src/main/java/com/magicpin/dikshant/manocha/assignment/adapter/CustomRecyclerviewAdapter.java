@@ -12,11 +12,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.magicpin.dikshant.manocha.assignment.R;
 import com.magicpin.dikshant.manocha.assignment.beans.VideoBean;
 
@@ -44,9 +39,7 @@ public class CustomRecyclerviewAdapter extends RecyclerView.Adapter<CustomRecycl
             myViewHolder.video_desc.setText(VideoBean.getDescription());
             myViewHolder.video_num.setText("Video Number:" + String.valueOf(videos.get(i).getSerial()));
             myViewHolder.parent.setTag(myViewHolder);
-           Glide.with(myViewHolder.itemView.getContext())
-               .load("https://androidwave.com/media/images/exo-player-in-recyclerview-in-android-5.png").apply(new RequestOptions().optionalCenterCrop())
-                .into(myViewHolder.sample);
+            myViewHolder.sample.setImageResource(R.drawable.magicpin);
     }
 
     @Override

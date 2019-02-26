@@ -1,11 +1,14 @@
 package com.magicpin.dikshant.manocha.assignment.customUI;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -36,6 +39,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -154,7 +158,7 @@ public class CustomRecyclerView extends RecyclerView {
 
                             break;
                         case Player.STATE_ENDED:
-                            simpleExoPlayer[i].seekTo(0);
+                            simpleExoPlayer[previousPosition].seekTo(0);
                             break;
                         case Player.STATE_IDLE:
 
@@ -251,7 +255,6 @@ public class CustomRecyclerView extends RecyclerView {
 
         }
 
-
         public void playVideo () {
             int targetPosition, startPosition, endPosition;
             startPosition = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
@@ -298,7 +301,6 @@ public class CustomRecyclerView extends RecyclerView {
 
             progressBar = holder.progressBar;
             sample = holder.sample;
-            playerView.setUseController(false);
             frameLayout = holder.itemView.findViewById(R.id.video_layout);
             frameLayout.addView(playerView);
             playerView.setPlayer(simpleExoPlayer[targetPosition]);
@@ -311,6 +313,7 @@ public class CustomRecyclerView extends RecyclerView {
             isVideoThere = true;
             parentView = holder.itemView;
             playerView.requestFocus();
+            playerView.setUseController(false);
             if(previousPosition!=-1)
             simpleExoPlayer[previousPosition].setPlayWhenReady(false);
             playerView.setPlayer(simpleExoPlayer[targetPosition]);
@@ -331,12 +334,16 @@ public class CustomRecyclerView extends RecyclerView {
                         }
                         super.onBackPressed();
                     }
+
                 };
                 ((ViewGroup) playerView.getParent()).removeView(playerView);
+                playerView.setUseController(true);
                 fullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 fullScreen = true;
                 fullScreenDialog.show();
+                playerView.showController();
             }
+
         }
 
         public void exitFullScreen()
@@ -345,6 +352,7 @@ public class CustomRecyclerView extends RecyclerView {
             fullScreenDialog.dismiss();
             ((ViewGroup) playerView.getParent()).removeView(playerView);
             frameLayout.addView(playerView);
+            playerView.setUseController(false);
         }
         public int getVisibleVideoSurfaceHeight ( int pos){
             int at = pos - ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
@@ -380,8 +388,10 @@ public class CustomRecyclerView extends RecyclerView {
         public void onRelease () {
 
             if (simpleExoPlayer != null) {
-                for (i = 0; i < videos.size(); i++)
+                for (i = 0; i < videos.size() && simpleExoPlayer[i]!=null; i++) {
                     simpleExoPlayer[i].release();
+                    simpleExoPlayer[i]=null;
+                }
                 simpleExoPlayer = null;
             }
             parentView = null;

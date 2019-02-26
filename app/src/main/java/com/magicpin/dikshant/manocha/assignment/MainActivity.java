@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         videoFeed.addItemDecoration(new DividerItemDecoration(dividerDrawable));
         videoFeed.setItemAnimator(new DefaultItemAnimator());
         videoFeed.setAdapter(feedAdapter);
-        videoFeed.scrollToPosition(0);
 
         if (MainActivity.firstTime) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -68,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             });
             MainActivity.firstTime = false;
         }
+        videoFeed.scrollToPosition(0);
 
     }
 
@@ -75,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         if(videoFeed!=null)
             videoFeed.onRelease();
-        firstTime=true;
+        finish();
         super.onDestroy();
+
     }
 
     @Override
