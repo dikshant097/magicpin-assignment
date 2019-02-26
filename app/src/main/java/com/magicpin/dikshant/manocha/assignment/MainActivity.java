@@ -46,28 +46,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-        videoFeed=findViewById(R.id.videoFeed);
-        feedAdapter=new CustomRecyclerviewAdapter(videos,this);
-        videoFeed.setLayoutManager(new LinearLayoutManager(this, VERTICAL, false));
-        Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.gap_layout);
-        videoFeed.addItemDecoration(new DividerItemDecoration(dividerDrawable));
-        videoFeed.setItemAnimator(new DefaultItemAnimator());
-        videoFeed.setAdapter(feedAdapter);
 
-        if (MainActivity.firstTime) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            getSupportActionBar().hide();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+            videoFeed=findViewById(R.id.videoFeed);
+            feedAdapter=new CustomRecyclerviewAdapter(videos,this);
+            videoFeed.setLayoutManager(new LinearLayoutManager(this, VERTICAL, false));
+            Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.gap_layout);
+            videoFeed.addItemDecoration(new DividerItemDecoration(dividerDrawable));
+            videoFeed.setItemAnimator(new DefaultItemAnimator());
+            videoFeed.setAdapter(feedAdapter);
+
+
+            if (MainActivity.firstTime) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
                     videoFeed.playVideo();
-                }
-            });
-            MainActivity.firstTime = false;
-        }
-        videoFeed.scrollToPosition(0);
+                    }
+                 });
+                 MainActivity.firstTime = false;
+                videoFeed.scrollToPosition(0);
+            }
 
     }
 
@@ -75,9 +77,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         if(videoFeed!=null)
             videoFeed.onRelease();
-        finish();
         super.onDestroy();
+    }
 
+    @Override
+    public void onBackPressed() {
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override

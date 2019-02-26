@@ -169,7 +169,8 @@ public class CustomRecyclerView extends RecyclerView {
                             }
                             playerView.setVisibility(VISIBLE);
                             playerView.setAlpha(1);
-                            sample.setVisibility(GONE);
+                            if(sample!=null)
+                                sample.setVisibility(GONE);
                             break;
                         default:
                             break;
