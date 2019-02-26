@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         if(videoFeed!=null)
             videoFeed.onRelease();
-        git =true;
+        firstTime=true;
         super.onDestroy();
     }
 
