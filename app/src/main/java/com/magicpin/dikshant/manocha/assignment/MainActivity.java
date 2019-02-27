@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             getSupportActionBar().hide();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             videoFeed=findViewById(R.id.videoFeed);
             feedAdapter=new CustomRecyclerviewAdapter(videos,this);
             videoFeed.setLayoutManager(new LinearLayoutManager(this, VERTICAL, false));

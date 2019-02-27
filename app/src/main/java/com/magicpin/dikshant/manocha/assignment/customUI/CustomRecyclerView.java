@@ -152,6 +152,7 @@ public class CustomRecyclerView extends RecyclerView {
 
                         case Player.STATE_BUFFERING:
                             playerView.setAlpha(0.5f);
+                            playerView.setKeepScreenOn(true);
                             if (progressBar != null) {
                                 progressBar.setVisibility(VISIBLE);
                             }
@@ -159,15 +160,17 @@ public class CustomRecyclerView extends RecyclerView {
                             break;
                         case Player.STATE_ENDED:
                             simpleExoPlayer[previousPosition].seekTo(0);
+                            playerView.setKeepScreenOn(false);
                             break;
                         case Player.STATE_IDLE:
-
+                            playerView.setKeepScreenOn(false);
                             break;
                         case Player.STATE_READY:
                             if (progressBar != null) {
                                 progressBar.setVisibility(GONE);
                             }
                             playerView.setVisibility(VISIBLE);
+                            playerView.setKeepScreenOn(true);
                             playerView.setAlpha(1);
                             if(sample!=null)
                                 sample.setVisibility(GONE);
